@@ -1,10 +1,12 @@
 # code-repository
 
 
-Examples
+## Examples
 In the following examples, consider that no code snippets have been uploaded beforehand.
 
-Example 1
+Blank answers for responses are for images of rendered html that have yet to be added. Coming soon. 
+
+### Example 1
 
 Request `POST /api/code/new` with the following body:
 ```
@@ -36,7 +38,7 @@ Request `POST /api/code/new` with the following body:
 ```
 Response: `{ "id" : "2187c46e-03ba-4b3a-828b-963466ea348c" }`.
 
-Example 2
+### Example 2
 
 Request: `GET /api/code/2187c46e-03ba-4b3a-828b-963466ea348c`
 
@@ -60,7 +62,7 @@ Response:
     "views": 3
 }
 ```
-Example 3
+### Example 3
 
 Request: `GET /code/2187c46e-03ba-4b3a-828b-963466ea348c`
 
@@ -68,7 +70,7 @@ Response:
 
 
 
-Example 4
+### Example 4
 
 Request: `GET /api/code/latest`
 
@@ -89,7 +91,7 @@ Response:
     }
 ]
 ```
-Example 5
+### Example 5
 
 Request: `GET /code/latest`
 
@@ -97,7 +99,7 @@ Response:
 
 
 
-Example 6
+### Example 6
 
 Request: `GET /code/new`
 
