@@ -1,0 +1,29 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'java'
+    id("io.freefair.lombok") version "6.0.0-m2"
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets.main.resources.srcDirs = ["src/resources"]
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.7'
+
+    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    runtimeOnly 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}
