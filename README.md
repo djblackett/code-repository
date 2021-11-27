@@ -2,6 +2,7 @@
 
 This project is a server for sharing code snippets. You can upload and retrieve snippets of code that are persisted in a database. You can retrieve a specific code snippet by its UUID, or you can get a list of most recent code snippets. Making requests to endpoints beginning in `/api/` will return the code as JSON. Otherwise, it will be returned as html. There are options for limiting access to the code snippets. If you set the `time` and/or `views` property in the body of the POST request, you can set the number of seconds until the code snippet is automatically deleted, and/or the number of times it can be viewed before it is deleted. Snippets that are set with one of the properties will not be returned in requests made to the `/latest` endpoint. 
 
+The default port for testing the project is set to 8889, so all endpoints can be accessed by appending them to http://localhost:8889. 
 
 `GET /api/code/N` will return JSON with the N-th uploaded code snippet.   
 `GET /code/N` will return HTML that contains the N-th uploaded code snippet.   
