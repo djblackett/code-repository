@@ -3,12 +3,12 @@
 This project is a server for sharing code snippets. You can upload and retrieve snippets of code that are persisted in a database. You can retrieve a specific code snippet by its UUID, or you can get a list of most recent code snippets. Making requests to endpoints beginning in `/api/` will return the code as JSON. Otherwise, it will be returned as html. There are options for limiting access to the code snippets. If you set the `time` and/or `views` property in the body of the POST request, you can set the number of seconds until the code snippet is automatically deleted, and/or the number of times it can be viewed before it is deleted. Snippets that are set with one of the properties will not be returned in requests made to the `/latest` endpoint. 
 
 
-`GET /api/code/N` should return JSON with the N-th uploaded code snippet.   
-`GET /code/N` should return HTML that contains the N-th uploaded code snippet.   
-`POST /api/code/new` should take a JSON object with a single field code, use it as the current code snippet, and return JSON with a single field id. ID is the UUID of the code snippet that can help you access it via the endpoint `GET /code/N`.   
-`GET /code/new` should be the same as in the second and third stages.   
-`GET /api/code/latest` should return a JSON array with 10 most recently uploaded code snippets sorted from the newest to the oldest.   
-`GET /code/latest` should return HTML that contains 10 most recently uploaded code snippets. Use the title Latest for this page.   
+`GET /api/code/N` will return JSON with the N-th uploaded code snippet.   
+`GET /code/N` will return HTML that contains the N-th uploaded code snippet.   
+`POST /api/code/new` will take a JSON object with a single field code, use it as the current code snippet, and return JSON with a single field id. ID is the UUID of the code snippet that can help you access it via the endpoint `GET /code/N`.   
+`GET /code/new` will be the same as in the second and third stages.   
+`GET /api/code/latest` will return a JSON array with 10 most recently uploaded code snippets sorted from the newest to the oldest.   
+`GET /code/latest` will return HTML that contains 10 most recently uploaded code snippets.  
 
 ## Examples
 In the following examples, consider that no code snippets have been uploaded beforehand.
