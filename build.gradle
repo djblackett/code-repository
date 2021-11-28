@@ -40,7 +40,19 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
+    task stage(dependsOn: ['build', 'clean'])
+    build.mustRunAfter clean
+
+    task copyToLib(type: Copy) {
+        into "$buildDir/libs"
+        from(configurations.implementation)
+    }
+
+    stage.dependsOn(copyToLib)
+
 }
+
+
 
 wrapper {
     gradleVersion = '7.1.1'
