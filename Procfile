@@ -1,1 +1,1 @@
-web: java -jar build/libs/code-repository.jar
+web: java -jar build/libs/Code_Sharing_Platform-task.jar
