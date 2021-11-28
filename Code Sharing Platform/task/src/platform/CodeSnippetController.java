@@ -15,20 +15,21 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class CodeSnippetController {
@@ -177,41 +178,54 @@ public class CodeSnippetController {
     }
 
     @GetMapping("/code/new")
-    public String getSubmissionForm() {
-        System.out.println("web form sent");
-        return "<html>" +
-                "<head>" +
-                "    <title>Create</title>" +
-                "   <script>function send() {" +
-                "    let object = {" +
-                "        \"code\": document.getElementById(\"code_snippet\").value," +
-                "        \"time\": document.getElementById(\"time_restriction\").value," +
-                "        \"views\": document.getElementById(\"views_restriction\").value" +
-                "    };" +
-                "    " +
-                "    let json = JSON.stringify(object);" +
-                "    " +
-                "    let xhr = new XMLHttpRequest();" +
-                "    xhr.open(\"POST\", '/api/code/new', false);" +
-                "    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');" +
-                "    xhr.send(json);" +
-                "    " +
-                "    if (xhr.status == 200) {" +
-                "      alert(\"Success!\");" +
-                "    }" +
-                "}</script>" +
-                "</head>" +
-                "<body>" +
-                "<input id=\"time_restriction\" type=\"text\"/ value=\"0\">" +
-                "<br>" +
-                "<input id=\"views_restriction\" type=\"text\" value=\"0\"/>" +
-                "<br>" +
-                "<textarea id=\"code_snippet\"> Enter Code Snippet </textarea>" +
-                "<br>" +
-                "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">Submit</button>" +
-                "</body>" +
-                "</html>";
+    public String getSubmissionForm() throws FileNotFoundException {
+       System.out.println("web form sent");
+//        return "<html>" +
+//                "<head>" +
+//                "    <title>Create</title>" +
+//                "   <script>function send() {" +
+//                "    let object = {" +
+//                "        \"code\": document.getElementById(\"code_snippet\").value," +
+//                "        \"time\": document.getElementById(\"time_restriction\").value," +
+//                "        \"views\": document.getElementById(\"views_restriction\").value" +
+//                "    };" +
+//                "    " +
+//                "    let json = JSON.stringify(object);" +
+//                "    " +
+//                "    let xhr = new XMLHttpRequest();" +
+//                "    xhr.open(\"POST\", '/api/code/new', false);" +
+//                "    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');" +
+//                "    xhr.send(json);" +
+//                "    " +
+//                "    if (xhr.status == 200) {" +
+//                "      alert(\"Success!\");" +
+//                "    }" +
+//                "}</script>" +
+//                "</head>" +
+//                "<body>" +
+//                "<input id=\"time_restriction\" type=\"text\"/ value=\"0\">" +
+//                "<br>" +
+//                "<input id=\"views_restriction\" type=\"text\" value=\"0\"/>" +
+//                "<br>" +
+//                "<textarea id=\"code_snippet\"> Enter Code Snippet </textarea>" +
+//                "<br>" +
+//                "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">Submit</button>" +
+//                "</body>" +
+//                "</html>";
+        File file = new File("Code Sharing Platform/task/src/resources/static/new-code-snippet.html");
+        FileReader in = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(in);
+        String html = bufferedReader.lines().collect(Collectors.joining());
+
+        return html;
     }
+
+//    @GetMapping("/code/new")
+//    public ModelAndView getSubmissionForm() {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.setViewName("new-code-snippet.html");
+//        return modelAndView;
+//    }
 
     @GetMapping("code/latest")
     public String getLatestCodeHtml() throws IOException, TemplateException {

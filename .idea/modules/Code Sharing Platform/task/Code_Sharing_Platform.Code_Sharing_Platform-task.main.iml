@@ -8,7 +8,9 @@
   <component name="FacetManager">
     <facet type="web" name="Web">
       <configuration>
-        <webroots />
+        <webroots>
+          <root url="file://$MODULE_DIR$/../../../../Code Sharing Platform/task/src" relative="/" />
+        </webroots>
         <sourceRoots>
           <root url="file://$MODULE_DIR$/../../../../Code Sharing Platform/task/src" />
         </sourceRoots>

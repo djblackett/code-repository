@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script>
+        function send() {
+        let object = {"code": document.getElementById("code_snippet").value,
+            "time": document.getElementById("time_restriction").value,
+            "views": document.getElementById("views_restriction").value};
+        let json = JSON.stringify(object);
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", '/api/code/new', false);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.send(json);
+        if (xhr.status === 200) {alert("Success!");}
+    }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Code Snippet Repository</h1>
+</header>
+
+<fieldset>
+    <legend>Fill in the form below to create a new code snippet.</legend>
+
+    <label for="time_restriction">Time Restriction (in seconds)</label>
+    <input id="time_restriction" type="text" value="0">
+    <label for="views_restriction">Views Restriction</label>
+    <input id="views_restriction" type="text" value="0">
+    <label for="code_snippet">Enter Code Snippet Here:</label>
+    <textarea id="code_snippet" placeholder="Enter Code Snippet"></textarea>
+    <button id="send_snippet" type="submit" onclick="send()">Submit</button>
+
+</fieldset>
+
+
+
+</body>
+
+</html>
+

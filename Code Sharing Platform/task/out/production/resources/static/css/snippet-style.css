@@ -1,0 +1,11 @@
+#code-block {
+    border: 3px solid black;
+    box-shadow: 1px 1px 10px 2px #619e9e;
+    min-height: 100px;
+    width: 350px;
+    border-radius: 5px;
+}
+
+#load-date {
+    margin: 10px;
+}

@@ -1,0 +1,57 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: grey;
+    margin: 0;
+    border: 2px solid black;
+    box-shadow: 1px 1px 10px 2px #619e9e;
+}
+h1 {
+    /*   width: 100%; */
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 5px;
+}
+
+legend {
+
+    text-align: center;
+}
+
+#code-block {
+    border: 1px solid black;
+    box-shadow: 1px 1px 10px 2px #619e9e;
+}
+
+label {
+    font-size: 1.2em;
+    margin: 5px;
+}
+
+input {
+    margin-bottom: 20px;
+    box-shadow: 1px 1px 10px 2px #619e9e;
+}
+
+textarea {
+    height: 200px;
+    width: 400px;
+    box-shadow: 1px 1px 10px 2px #619e9e;
+}
+
+button {
+    margin: 10px;
+}
