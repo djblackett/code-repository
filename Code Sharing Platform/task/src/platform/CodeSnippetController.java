@@ -130,7 +130,6 @@ public class CodeSnippetController {
             System.out.println("Snippet accessed at " + LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS) + " Snippet.time: " + snippet.getTime() + "\nViews left: " + snippet.getViews());
             return snippet;
         } else {
-            //notFound.put("code", "");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
@@ -140,7 +139,6 @@ public class CodeSnippetController {
     public ResponseEntity<String> getLatestCode() {
         List<CodeSnippet> codeSnippets = codeSnippetService.getLatestCodeSnippets();
         Collections.reverse(codeSnippets);
-        //JSONArray jsonArray = new JSONArray();
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         List<CodeSnippet> jsonArray = new ArrayList<>();
         for (int i = codeSnippets.size() - 1; i > codeSnippets.size() - 11; i--) {
@@ -187,11 +185,21 @@ public class CodeSnippetController {
 //                "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">Submit</button>" +
 //                "</body>" +
 //                "</html>";
-        File file = new File("src/resources/static/new-code-snippet.html");
-        FileReader in = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(in);
+        //File file = new File("./new-code-snippet.html");
 
-        return bufferedReader.lines().collect(Collectors.joining());
+        //FileReader in = new FileReader(file);
+        InputStream is;
+       try {
+           is = getClass().getClassLoader().getResourceAsStream("static/new-code-snippet.html");
+           if (is != null) {
+               BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+               return bufferedReader.lines().collect(Collectors.joining());
+           }
+       } catch (Exception e) {
+           return e.toString();
+       }
+        return "<html>error</html>";
     }
 
 
@@ -246,8 +254,6 @@ public class CodeSnippetController {
 
         codeSnippetService.newSnippet(snippet);
 
-
-
         Map<String, String> snippetId = new HashMap<>();
         snippetId.put("id", String.valueOf(snippet.getUuid()));
         return new ResponseEntity<>(snippetId.toString(), HttpStatus.OK);
@@ -260,7 +266,3 @@ public class CodeSnippetController {
     }
 }
 
-
-/*
-Does shutting down the program
- */
