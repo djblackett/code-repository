@@ -1,64 +1,49 @@
 package platform;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.annotations.Expose;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+// not taking advantage of Lombok yet
 
 @Data
 @Entity
 @Table(name = "code_snippets")
 public class CodeSnippet {
 
-    @JsonIgnore
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @JsonIgnore
     private String uuid;
+    @Expose
     private String code;
-
-//    @JsonSerialize(using = LocalDateTimeSerializer.class)
-//    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
-//    @JsonProperty("date")
-
-
-    //@UpdateTimestamp
-    private LocalDateTime date;
-
+    @Expose
     private long time;
+    @Expose
     private long views;
 
-    @JsonIgnore
+    private LocalDateTime date;
+
+
+
     @NotFound
     private boolean isTimePresent = false;
 
     @NotNull
-    @JsonIgnore
     private boolean isViewPresent = false;
 
-
-
-    @JsonIgnore
     private long originalTimerStart = 0;
-
-    @JsonIgnore
     private long originalTime = 0;
-
-
-    public CodeSnippet(String code, LocalDateTime date) {
-        this.uuid = UUID.randomUUID().toString();
-        this.code = code;
-        this.date = date;
-        this.time = 0;
-        this.views = 0;
-    }
 
     public CodeSnippet(String code, LocalDateTime date, long time, long views) {
         this.uuid = UUID.randomUUID().toString();
@@ -70,23 +55,6 @@ public class CodeSnippet {
         this.isTimePresent = false;
 
     }
-
-    public CodeSnippet(String code, LocalDateTime date, long time) {
-        this.uuid = UUID.randomUUID().toString();
-        this.code = code;
-        this.date = date;
-        this.time = time;
-        this.views = 0;
-    }
-
-    public CodeSnippet(String uuid, String code, LocalDateTime date, long views) {
-        this.uuid = UUID.randomUUID().toString();
-        this.code = code;
-        this.date = date;
-        this.views = views;
-        this.time = 0;
-    }
-
     public CodeSnippet() {
 
     }

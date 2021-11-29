@@ -1,33 +1,22 @@
 package platform;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -106,12 +95,6 @@ public class CodeSnippetController {
 
             if (snippet.isTimePresent()) {
 
-//                    long elapsedTime = System.currentTimeMillis() - snippet.getOriginalTimerStart();
-//                    long timeLeft = snippet.getOriginalTime() - (elapsedTime / 1000);
-                // Duration duration = Duration.between(snippet.getDate(), LocalDateTime.now());
-                //long timeLeft = snippet.getOriginalTime() - duration.get(ChronoUnit.SECONDS);
-                //long timeLeftSeconds = (long) Math.floor(timeLeft / 1000.0);
-
                 long duration = ChronoUnit.SECONDS.between(snippet.getDate(), LocalDateTime.now());
                 long timeLeft = snippet.getTime() - duration;
 
@@ -152,29 +135,21 @@ public class CodeSnippetController {
         }
     }
 
-    private JSONObject convertSnippetToJsonObject(CodeSnippet snippet) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("code", snippet.getCode());
-        jsonObject.put("date", snippet.getDate());
-        jsonObject.put("time", snippet.getTime());
-        jsonObject.put("views", snippet.getViews());
-        return jsonObject;
-    }
-
-    //todo
 
     @GetMapping("/api/code/latest")
-    public JSONArray getLatestCode() {
+    public ResponseEntity<String> getLatestCode() {
         List<CodeSnippet> codeSnippets = codeSnippetService.getLatestCodeSnippets();
         Collections.reverse(codeSnippets);
-        JSONArray jsonArray = new JSONArray();
+        //JSONArray jsonArray = new JSONArray();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        List<CodeSnippet> jsonArray = new ArrayList<>();
         for (int i = codeSnippets.size() - 1; i > codeSnippets.size() - 11; i--) {
             if (i < 0) {
                 break;
             }
-            jsonArray.add(convertSnippetToJsonObject(codeSnippets.get(i)));
+            jsonArray.add(codeSnippets.get(i));
         }
-        return jsonArray;
+        return new ResponseEntity<>(gson.toJson(jsonArray), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/code/new")
@@ -212,24 +187,16 @@ public class CodeSnippetController {
 //                "<button id=\"send_snippet\" type=\"submit\" onclick=\"send()\">Submit</button>" +
 //                "</body>" +
 //                "</html>";
-        File file = new File("Code Sharing Platform/task/src/resources/static/new-code-snippet.html");
+        File file = new File("src/resources/static/new-code-snippet.html");
         FileReader in = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(in);
-        String html = bufferedReader.lines().collect(Collectors.joining());
 
-        return html;
+        return bufferedReader.lines().collect(Collectors.joining());
     }
 
-//    @GetMapping("/code/new")
-//    public ModelAndView getSubmissionForm() {
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.setViewName("new-code-snippet.html");
-//        return modelAndView;
-//    }
 
     @GetMapping("code/latest")
     public String getLatestCodeHtml() throws IOException, TemplateException {
-        Map<String, CodeSnippet> root = new HashMap<>();
         Template temp = CodeSharingPlatform.cfg.getTemplate("template.ftl");
         Writer out = new StringWriter();
         List<CodeSnippet> latestSnippets = codeSnippetService.getLatestCodeSnippets();
@@ -241,7 +208,7 @@ public class CodeSnippetController {
 
 
     @PostMapping("/api/code/new")
-    public ResponseEntity<String> postCode(@RequestBody String body) throws ParseException, InterruptedException {
+    public ResponseEntity<String> postCode(@RequestBody String body) throws ParseException {
         System.out.println(body);
         LocalDateTime date = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 //
